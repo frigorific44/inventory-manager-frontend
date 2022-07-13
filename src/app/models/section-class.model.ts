@@ -5,7 +5,7 @@ export class SectionClass {
     name: string | undefined;
     description: string | undefined;
     capacity: number | undefined;
-    warehouse: WarehouseClass | undefined;
+    // warehouse: WarehouseClass | undefined;
 
     constructor() {
         this.id = -1;
@@ -13,7 +13,7 @@ export class SectionClass {
 
     deserialize(input: any): this {
         Object.assign(this, input);
-        this.warehouse = new WarehouseClass().deserialize(input.warehouse);
+        // this.warehouse = new WarehouseClass().deserialize(input.warehouse);
         return this;
     }  
 }

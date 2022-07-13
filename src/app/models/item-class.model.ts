@@ -6,15 +6,16 @@ export class ItemClass {
     altId: string | undefined;
     description: string | undefined;
     count: number | undefined;
-    section: SectionClass | undefined;
+    // section: SectionClass | undefined;
 
     constructor() {
         this.index = -1;
+        this.count = 0;
     }
 
     deserialize(input: any): this {
         Object.assign(this, input);
-        this.section = new SectionClass().deserialize(input.warehouse);
+        // this.section = new SectionClass().deserialize(input.warehouse);
         return this;
     }  
 }

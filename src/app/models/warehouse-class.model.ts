@@ -4,7 +4,7 @@ import { Deserializable } from "./deserializable.model";
 export class WarehouseClass implements Deserializable {
     id: number;
     name: string | undefined;
-    company: CompanyClass | undefined;
+    // company: CompanyClass | undefined;
 
     constructor() {
         this.id = -1;
@@ -12,7 +12,7 @@ export class WarehouseClass implements Deserializable {
 
     deserialize(input: any): this {
         Object.assign(this, input);
-        this.company = new CompanyClass().deserialize(input.company);
+        // this.company = new CompanyClass().deserialize(input.company);
         return this;
     }    
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SectionClass } from '../models/section-class.model';
-import { WarehouseClass } from '../models/warehouse-class.model';
+import { Section } from '../models/section';
+import { Warehouse } from '../models/warehouse';
 import { SectionService } from '../services/section.service';
 
 @Component({
@@ -10,9 +10,10 @@ import { SectionService } from '../services/section.service';
 })
 export class SectionListComponent implements OnInit {
 
-  @Input() warehouse: WarehouseClass | undefined;
+  @Input() warehouse?: Warehouse;
   service :SectionService;
-  sections :Array<SectionClass> = [];
+  sections :Array<Section> = [];
+  clonedSections: { [s: number]: Section; } = {};
 
   constructor(service :SectionService) {
     this.service = service;
@@ -24,10 +25,39 @@ export class SectionListComponent implements OnInit {
 
   refreshData() :void {
     if (this.warehouse != undefined) {
-      this.service.findByWarehouse(this.warehouse).subscribe(data => {
+      this.service.findByWarehouse(this.warehouse.id).subscribe(data => {
         this.sections = data;
       });
     }
+  }
+
+  onRowEditInit(section: Section) {
+    this.clonedSections[section.id] = {...section};
+  }
+
+  onRowEditSave(section: Section) {
+    this.service.update(section).subscribe(response => {});
+    delete this.clonedSections[section.id];
+    // // input checking
+    // if (true) {
+    //   this.service.update(warehouse);
+    //   delete this.clonedWarehouses[warehouse.id];
+    //   // this.messageService.add({severity:'success', summary: 'Success', detail:'Product is updated'});
+    // }
+    // else {
+    //     // this.messageService.add({severity:'error', summary: 'Error', detail:'Invalid Price'});
+    // }
+  }
+
+  onRowEditCancel(section: Section, index: number) {
+    this.sections[index] = this.clonedSections[section.id];
+    delete this.clonedSections[section.id];
+  }
+
+  onRowDelete(section: Section) {
+    this.service.delete(section).subscribe({
+      complete: () => this.refreshData()
+    })
   }
 
 }

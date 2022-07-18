@@ -1,4 +1,4 @@
-<p-table [value]="sections" dataKey="id">
+<p-table [value]="sections" dataKey="id" rowExpandMode="single" editMode="row" responsiveLayout="scroll">
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             Sections
@@ -13,17 +13,46 @@
             <th style="width: 6rem"></th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-section let-expanded="expanded">
-        <tr>
+    <ng-template pTemplate="body" let-section let-expanded="expanded" let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="section">
             <td>
                 <button type="button" pRipple pButton [pRowToggler]="section" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
             </td>
-            <td>{{section.name}}</td>
-            <td>{{section.description}}</td>
-            <td>{{section.capacity}}</td>
             <td>
-                <button pButton type="button" class="p-button-success p-button-text" icon="pi pi-pencil"></button>
-                <button pButton type="button" class="p-button-danger p-button-text" icon="pi pi-times"></button>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="text" [(ngModel)]="section.name">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{section.name}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="text" [(ngModel)]="section.description">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{section.description}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="number" [(ngModel)]="section.capacity">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{section.capacity}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <button *ngIf="!editing" pButton type="button" pInitEditableRow class="p-button-success p-button-text" icon="pi pi-pencil" (click)="onRowEditInit(section)"></button>
+                <button *ngIf="!editing" pButton type="button" class="p-button-danger p-button-text" icon="pi pi-trash" (click)="onRowDelete(section)"></button>
+                <button *ngIf="editing" pButton type="button" pSaveEditableRow class="p-button-success p-button-text" icon="pi pi-check" (click)="onRowEditSave(section)"></button>
+                <button *ngIf="editing" pButton type="button" pCancelEditableRow class="p-button-danger p-button-text" icon="pi pi-times" (click)="onRowEditCancel(section, ri)"></button>
             </td>
         </tr>
     </ng-template>

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CompanyClass } from '../models/company-class.model';
-import { WarehouseClass } from '../models/warehouse-class.model';
+import { Company } from '../models/company';
+import { Warehouse } from '../models/warehouse';
 import { WarehouseService } from '../services/warehouse.service';
 
 @Component({
@@ -10,9 +10,10 @@ import { WarehouseService } from '../services/warehouse.service';
 })
 export class WarehouseListComponent implements OnInit {
 
-  @Input() company: CompanyClass | undefined;
+  @Input() company?: Company;
   service :WarehouseService;
-  warehouses :Array<WarehouseClass> = [];
+  warehouses :Array<Warehouse> = [];
+  clonedWarehouses: { [s: number]: Warehouse; } = {};
 
   constructor(service :WarehouseService) {
     this.service = service;
@@ -24,10 +25,40 @@ export class WarehouseListComponent implements OnInit {
 
   refreshData() :void {
     if (this.company != undefined) {
-      this.service.findByCompany(this.company).subscribe(data => {
+      this.service.findByCompany(this.company.id).subscribe(data => {
         this.warehouses = data;
       });
     }
+  }
+
+  onRowEditInit(warehouse: Warehouse) {
+    this.clonedWarehouses[warehouse.id] = {...warehouse};
+  }
+
+  onRowEditSave(warehouse: Warehouse) {
+    console.log("Help!")
+    this.service.update(warehouse).subscribe(response => {});
+    delete this.clonedWarehouses[warehouse.id];
+    // // input checking
+    // if (true) {
+    //   this.service.update(warehouse);
+    //   delete this.clonedWarehouses[warehouse.id];
+    //   // this.messageService.add({severity:'success', summary: 'Success', detail:'Product is updated'});
+    // }
+    // else {
+    //     // this.messageService.add({severity:'error', summary: 'Error', detail:'Invalid Price'});
+    // }
+  }
+
+  onRowEditCancel(warehouse: Warehouse, index: number) {
+    this.warehouses[index] = this.clonedWarehouses[warehouse.id];
+    delete this.clonedWarehouses[warehouse.id];
+  }
+
+  onRowDelete(warehouse: Warehouse) {
+    this.service.delete(warehouse).subscribe({
+      complete: () => this.refreshData()
+    })
   }
 
 }

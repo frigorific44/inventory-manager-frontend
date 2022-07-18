@@ -1,4 +1,4 @@
-<p-table [value]="warehouses" dataKey="id" rowExpandMode="single" styleClass="p-datatable-sm">
+<p-table [value]="warehouses" dataKey="id" rowExpandMode="single" styleClass="p-datatable-sm" editMode="row" responsiveLayout="scroll">
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             Warehouses
@@ -12,16 +12,36 @@
             <th style="width: 6rem"></th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-warehouse let-expanded="expanded">
-        <tr>
+    <ng-template pTemplate="body" let-warehouse let-expanded="expanded" let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="warehouse">
             <td>
                 <button type="button" pRipple pButton [pRowToggler]="warehouse" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
             </td>
-            <td>{{warehouse.name}}</td>
-            <td>{{warehouse.description}}</td>
             <td>
-                <button pButton type="button" class="p-button-success p-button-text" icon="pi pi-pencil"></button>
-                <button pButton type="button" class="p-button-danger p-button-text" icon="pi pi-times"></button>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="text" [(ngModel)]="warehouse.name">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{warehouse.name}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="text" [(ngModel)]="warehouse.description">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{warehouse.description}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <button *ngIf="!editing" pButton type="button" pInitEditableRow class="p-button-success p-button-text" icon="pi pi-pencil" (click)="onRowEditInit(warehouse)"></button>
+                <button *ngIf="!editing" pButton type="button" class="p-button-danger p-button-text" icon="pi pi-trash" (click)="onRowDelete(warehouse)"></button>
+                <button *ngIf="editing" pButton type="button" pSaveEditableRow class="p-button-success p-button-text" icon="pi pi-check" (click)="onRowEditSave(warehouse)"></button>
+                <button *ngIf="editing" pButton type="button" pCancelEditableRow class="p-button-danger p-button-text" icon="pi pi-times" (click)="onRowEditCancel(warehouse, ri)"></button>
             </td>
         </tr>
     </ng-template>
@@ -34,7 +54,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="2">There are no warehouses.</td>
+            <td colspan="4">There are no warehouses.</td>
         </tr>
     </ng-template>
 </p-table>

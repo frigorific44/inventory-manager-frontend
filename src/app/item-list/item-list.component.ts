@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ItemClass } from '../models/item-class.model';
-import { SectionClass } from '../models/section-class.model';
+import { Item } from '../models/item';
+import { Section } from '../models/section';
 import { ItemService } from '../services/item.service';
 
 @Component({
@@ -10,9 +10,10 @@ import { ItemService } from '../services/item.service';
 })
 export class ItemListComponent implements OnInit {
 
-  @Input() section :SectionClass | undefined;
+  @Input() section?: Section;
   service :ItemService;
-  items :Array<ItemClass> = [];
+  items :Array<Item> = [];
+  clonedItems: { [s: number]: Item; } = {};
 
   constructor(service :ItemService) {
     this.service = service;
@@ -24,10 +25,38 @@ export class ItemListComponent implements OnInit {
 
   refreshData() :void {
     if (this.section != undefined) {
-      this.service.findBySection(this.section).subscribe(data => {
+      this.service.findBySection(this.section.id).subscribe(data => {
         this.items = data;
       });
     }
   }
 
+  onRowEditInit(item: Item) {
+    this.clonedItems[item.id] = {...item};
+  }
+
+  onRowEditSave(item: Item) {
+    this.service.update(item).subscribe(response => {});
+    delete this.clonedItems[item.id];
+    // // input checking
+    // if (true) {
+    //   this.service.update(warehouse);
+    //   delete this.clonedWarehouses[warehouse.id];
+    //   // this.messageService.add({severity:'success', summary: 'Success', detail:'Product is updated'});
+    // }
+    // else {
+    //     // this.messageService.add({severity:'error', summary: 'Error', detail:'Invalid Price'});
+    // }
+  }
+
+  onRowEditCancel(item: Item, index: number) {
+    this.items[index] = this.clonedItems[item.id];
+    delete this.clonedItems[item.id];
+  }
+
+  onRowDelete(item: Item) {
+    this.service.delete(item).subscribe({
+      complete: () => this.refreshData()
+    })
+  }
 }

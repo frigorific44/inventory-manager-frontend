@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ItemClass } from '../models/item-class.model';
-import { SectionClass } from '../models/section-class.model';
+import { Item } from '../models/item';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,7 @@ export class ItemService {
     this.http = http;
   }
 
-  save(item: ItemClass) :Observable<any> {
+  save(item: Item) :Observable<any> {
     return this.http.post(environment.apiUrl.root + environment.apiUrl.itemExt, item);
   }
 
@@ -23,7 +22,15 @@ export class ItemService {
     return this.http.get(environment.apiUrl.root + environment.apiUrl.itemExt + id);
   }
 
-  findBySection(section: SectionClass) :Observable<any> {
-    return this.findById(section.id);
+  findBySection(sectionId: number) :Observable<any> {
+    return this.findById(sectionId);
+  }
+
+  update(item: Item) :Observable<any> {
+    return this.http.put(environment.apiUrl.root + environment.apiUrl.itemExt, item);
+  }
+
+  delete(item: Item) :Observable<any> {
+    return this.http.delete(environment.apiUrl.root + environment.apiUrl.itemExt + item.parentId + "/" + item.id);
   }
 }

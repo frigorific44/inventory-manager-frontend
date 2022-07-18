@@ -1,15 +1,15 @@
 import { SectionClass } from "./section-class.model";
 
 export class ItemClass {
-    index: number;
+    id: number;
     name: string | undefined;
-    altId: string | undefined;
+    alt: string | undefined;
     description: string | undefined;
     count: number | undefined;
     // section: SectionClass | undefined;
 
     constructor() {
-        this.index = -1;
+        this.id = -1;
         this.count = 0;
     }
 

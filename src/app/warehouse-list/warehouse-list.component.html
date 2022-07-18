@@ -18,10 +18,10 @@
             <td>{{warehouse.name}}</td>
         </tr>
     </ng-template>
-    <ng-template pTemplate="rowexpansion" let-section>
+    <ng-template pTemplate="rowexpansion" let-warehouse let-section>
         <tr>
             <td colspan="4" class="inner-table" [style]="{'padding-top':'0px', 'padding-bottom':'0px'}">
-                <app-section-list></app-section-list>
+                <app-section-list [warehouse]="warehouse"></app-section-list>
             </td>
         </tr>
     </ng-template>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SectionClass } from '../models/section-class.model';
+import { WarehouseClass } from '../models/warehouse-class.model';
 import { SectionService } from '../services/section.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { SectionService } from '../services/section.service';
 })
 export class SectionListComponent implements OnInit {
 
+  @Input() warehouse: WarehouseClass | undefined;
   service :SectionService;
   sections :Array<SectionClass> = [];
 
@@ -21,17 +23,11 @@ export class SectionListComponent implements OnInit {
   }
 
   refreshData() :void {
-    this.sections =  [
-      {id: 0, name: 'A', description: 'First', capacity: 10},
-      {id: 1, name: 'B', description: 'Second', capacity: 11},
-      {id: 2, name: 'C', description: 'Third', capacity: 5},
-      {id: 3, name: 'D', description: 'Fourth', capacity: 7}
-    ].map((temp: any) => {
-      return new SectionClass().deserialize(temp);
-    });
-    // this.service.findByCompany(new CompanyClass()).subscribe(data => {
-    //   this.warehouses = data;
-    // });
+    if (this.warehouse != undefined) {
+      this.service.findByWarehouse(this.warehouse).subscribe(data => {
+        this.sections = data;
+      });
+    }
   }
 
 }

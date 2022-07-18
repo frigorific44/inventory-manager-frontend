@@ -23,7 +23,7 @@ export class ItemService {
     return this.http.get(environment.apiUrl.root + environment.apiUrl.itemExt + id);
   }
 
-  findByWarehouse(section: SectionClass) :Observable<any> {
+  findBySection(section: SectionClass) :Observable<any> {
     return this.findById(section.id);
   }
 }

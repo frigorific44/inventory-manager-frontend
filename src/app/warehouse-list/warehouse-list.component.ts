@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CompanyClass } from '../models/company-class.model';
 import { WarehouseClass } from '../models/warehouse-class.model';
 import { WarehouseService } from '../services/warehouse.service';
@@ -10,6 +10,7 @@ import { WarehouseService } from '../services/warehouse.service';
 })
 export class WarehouseListComponent implements OnInit {
 
+  @Input() company: CompanyClass | undefined;
   service :WarehouseService;
   warehouses :Array<WarehouseClass> = [];
 
@@ -22,17 +23,11 @@ export class WarehouseListComponent implements OnInit {
   }
 
   refreshData() :void {
-    this.warehouses =  [
-      {id: 0, name: 'Downington'},
-      {id: 1, name: 'Upington'},
-      {id: 2, name: 'Leftington'},
-      {id: 3, name: 'Rightington'}
-    ].map((temp: any) => {
-      return new WarehouseClass().deserialize(temp);
-    });
-    // this.service.findByCompany(new CompanyClass()).subscribe(data => {
-    //   this.warehouses = data;
-    // });
+    if (this.company != undefined) {
+      this.service.findByCompany(this.company).subscribe(data => {
+        this.warehouses = data;
+      });
+    }
   }
 
 }

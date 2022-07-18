@@ -7,10 +7,10 @@ import { CompanyClass } from '../models/company-class.model';
   styleUrls: ['./inventory.component.css']
 })
 export class InventoryComponent implements OnInit {
-  userCompany: CompanyClass;
+  company: CompanyClass;
 
   constructor() {
-    this.userCompany = new CompanyClass().deserialize({id: 0, name: 'Acme'})
+    this.company = new CompanyClass().deserialize({id: 1, name: 'Acme'})
   }
 
   ngOnInit(): void {

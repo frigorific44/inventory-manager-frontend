@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: {
-    root: 'http://localhost:8080/inventory-manager/',
+    root: 'http://localhost:8080/im/',
+    compExt: 'company/',
     wareExt: 'warehouse/',
     sectExt: 'section/',
     itemExt: 'item/'

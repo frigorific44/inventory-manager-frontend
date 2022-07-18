@@ -10,6 +10,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>Capacity</th>
+            <th style="width: 6rem"></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-section let-expanded="expanded">
@@ -20,11 +21,15 @@
             <td>{{section.name}}</td>
             <td>{{section.description}}</td>
             <td>{{section.capacity}}</td>
+            <td>
+                <button pButton type="button" class="p-button-success p-button-text" icon="pi pi-pencil"></button>
+                <button pButton type="button" class="p-button-danger p-button-text" icon="pi pi-times"></button>
+            </td>
         </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-section>
         <tr>
-            <td colspan="4" [style]="{'padding-top':'0px', 'padding-bottom':'0px'}">
+            <td colspan="5" [style]="{'padding-top':'0px', 'padding-bottom':'0px'}">
                 <app-item-list [section]="section"></app-item-list>
             </td>
         </tr>

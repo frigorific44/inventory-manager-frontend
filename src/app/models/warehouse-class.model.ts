@@ -4,6 +4,7 @@ import { Deserializable } from "./deserializable.model";
 export class WarehouseClass implements Deserializable {
     id: number;
     name: string | undefined;
+    description: string | undefined;
     // company: CompanyClass | undefined;
 
     constructor() {

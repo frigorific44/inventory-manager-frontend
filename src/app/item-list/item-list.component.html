@@ -6,11 +6,12 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th>Index</th>
-            <th>Name</th>
-            <th>ID</th>
+            <th pSortableColumn="id">Index <p-sortIcon field="id"></p-sortIcon></th>
+            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="alt">ID <p-sortIcon field="alt"></p-sortIcon></th>
             <th>Description</th>
-            <th>Count</th>
+            <th pSortableColumn="count">Count <p-sortIcon field="count"></p-sortIcon></th>
+            <th style="width: 6rem"></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>
@@ -20,6 +21,10 @@
             <td>{{item.alt}}</td>
             <td>{{item.description}}</td>
             <td>{{item.count}}</td>
+            <td>
+                <button pButton type="button" class="p-button-success p-button-text" icon="pi pi-pencil"></button>
+                <button pButton type="button" class="p-button-danger p-button-text" icon="pi pi-times"></button>
+            </td>
         </tr>
     </ng-template>
 </p-table>

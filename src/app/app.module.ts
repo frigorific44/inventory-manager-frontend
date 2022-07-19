@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {ButtonModule} from 'primeng/button';
-import {DialogModule} from 'primeng/dialog';
+import {CardModule} from 'primeng/card';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {InputTextModule} from 'primeng/inputtext';
@@ -36,7 +36,7 @@ import { CommonModule } from '@angular/common';
     InputNumberModule,
     FormsModule,
     CommonModule,
-    DialogModule
+    CardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

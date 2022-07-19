@@ -10,10 +10,11 @@ import { ItemService } from '../services/item.service';
 })
 export class ItemListComponent implements OnInit {
 
-  @Input() section?: Section;
+  @Input() section!: Section;
   service :ItemService;
   items :Array<Item> = [];
   clonedItems: { [s: number]: Item; } = {};
+  newIsShowing: boolean = false;
 
   constructor(service :ItemService) {
     this.service = service;
@@ -25,33 +26,40 @@ export class ItemListComponent implements OnInit {
 
   refreshData() :void {
     if (this.section != undefined) {
+      let emptyItem: Item = {id: 0, parentId: this.section.id};
       this.service.findBySection(this.section.id).subscribe(data => {
         this.items = data;
+        this.items.unshift(emptyItem);
       });
     }
+  }
+
+  toggleNew() {
+    this.newIsShowing = !this.newIsShowing;
   }
 
   onRowEditInit(item: Item) {
     this.clonedItems[item.id] = {...item};
   }
 
-  onRowEditSave(item: Item) {
-    this.service.update(item).subscribe(response => {});
-    delete this.clonedItems[item.id];
-    // // input checking
-    // if (true) {
-    //   this.service.update(warehouse);
-    //   delete this.clonedWarehouses[warehouse.id];
-    //   // this.messageService.add({severity:'success', summary: 'Success', detail:'Product is updated'});
-    // }
-    // else {
-    //     // this.messageService.add({severity:'error', summary: 'Error', detail:'Invalid Price'});
-    // }
+  onRowEditSave(item: Item, rowIndex: number) {
+    if (rowIndex == 0) {
+      this.newIsShowing = false;
+      this.service.save(item).subscribe(response => {
+        this.refreshData();
+      });
+    } else {
+      this.service.update(item).subscribe(response => {});
+      delete this.clonedItems[item.id];
+    }
   }
 
   onRowEditCancel(item: Item, index: number) {
     this.items[index] = this.clonedItems[item.id];
     delete this.clonedItems[item.id];
+    if (index == 0) {
+      this.newIsShowing = false;
+    }
   }
 
   onRowDelete(item: Item) {
@@ -59,4 +67,5 @@ export class ItemListComponent implements OnInit {
       complete: () => this.refreshData()
     })
   }
+
 }

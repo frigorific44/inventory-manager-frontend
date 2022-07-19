@@ -10,13 +10,15 @@
             <th>Name</th>
             <th>Description</th>
             <th>Capacity</th>
-            <th style="width: 6rem"></th>
+            <th style="width: 6rem">
+                <button pButton type="button" class="p-button-warning" [icon]="newIsShowing ? 'pi pi-times' : 'pi pi-plus'" (click)="toggleNew()"></button>
+            </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-section let-expanded="expanded" let-editing="editing" let-ri="rowIndex">
-        <tr [pEditableRow]="section">
+        <tr [pEditableRow]="section" *ngIf="ri != 0 || newIsShowing">
             <td>
-                <button type="button" pRipple pButton [pRowToggler]="section" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                <button *ngIf="ri != 0" type="button" pRipple pButton [pRowToggler]="section" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
             </td>
             <td>
                 <p-cellEditor>
@@ -50,8 +52,8 @@
             </td>
             <td>
                 <button *ngIf="!editing" pButton type="button" pInitEditableRow class="p-button-success p-button-text" icon="pi pi-pencil" (click)="onRowEditInit(section)"></button>
-                <button *ngIf="!editing" pButton type="button" class="p-button-danger p-button-text" icon="pi pi-trash" (click)="onRowDelete(section)"></button>
-                <button *ngIf="editing" pButton type="button" pSaveEditableRow class="p-button-success p-button-text" icon="pi pi-check" (click)="onRowEditSave(section)"></button>
+                <button *ngIf="!editing && ri != 0" pButton type="button" class="p-button-danger p-button-text" icon="pi pi-trash" (click)="onRowDelete(section)"></button>
+                <button *ngIf="editing" pButton type="button" pSaveEditableRow class="p-button-success p-button-text" icon="pi pi-check" (click)="onRowEditSave(section, ri)"></button>
                 <button *ngIf="editing" pButton type="button" pCancelEditableRow class="p-button-danger p-button-text" icon="pi pi-times" (click)="onRowEditCancel(section, ri)"></button>
             </td>
         </tr>

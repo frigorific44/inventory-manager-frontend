@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 import { Item } from '../models/item';
 import { Section } from '../models/section';
 import { ItemService } from '../services/item.service';
@@ -15,6 +16,7 @@ export class ItemListComponent implements OnInit {
   items :Array<Item> = [];
   clonedItems: { [s: number]: Item; } = {};
   newIsShowing: boolean = false;
+  indexChoices: Array<{label: string, value: number}> = [];
 
   constructor(service :ItemService) {
     this.service = service;
@@ -24,11 +26,20 @@ export class ItemListComponent implements OnInit {
     this.refreshData();
   }
 
+  updateIndexChoices() :void {
+    let currIndices = this.items.map(item => item.id);
+    this.indexChoices = [...Array(this.section.capacity).keys()].map(i => {
+      return {label: (i+1).toString(), value: i+1}
+    }).filter(choice => !currIndices.includes(choice.value));
+    console.log(this.indexChoices);
+  }
+
   refreshData() :void {
     if (this.section != undefined) {
-      let emptyItem: Item = {id: 0, parentId: this.section.id};
       this.service.findBySection(this.section.id).subscribe(data => {
         this.items = data;
+        this.updateIndexChoices();
+        let emptyItem: Item = {id: (this.indexChoices ? this.indexChoices[0].value: 0), parentId: this.section.id};
         this.items.unshift(emptyItem);
       });
     }

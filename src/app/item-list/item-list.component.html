@@ -21,7 +21,8 @@
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputText type="number" [(ngModel)]="item.id" [min]="1" [max]="section.capacity ? section.capacity : 1">
+                        <!-- <input pInputText type="number" [(ngModel)]="item.id" [min]="1" [max]="section.capacity ? section.capacity : 1"> -->
+                        <p-dropdown [options]="indexChoices" appendTo="body" [(ngModel)]="item.id" [style]="{'width':'100%'}"></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
                         {{item.id}}

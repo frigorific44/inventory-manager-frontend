@@ -28,7 +28,7 @@ export class SectionListComponent implements OnInit {
 
   refreshData() :void {
     if (this.warehouse != undefined) {
-      let emptySection: Section = {id: -1, parentId: this.warehouse.id};
+      let emptySection: Section = {id: -1, capacity: 0, parentId: this.warehouse.id};
       this.service.findByWarehouse(this.warehouse.id).subscribe(data => {
         this.sections = data;
         this.sections.unshift(emptySection);

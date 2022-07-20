@@ -1,4 +1,4 @@
-<p-table [value]="items" dataKey="id" rowExpandMode="single" editMode="row" responsiveLayout="scroll">
+<p-table [value]="iItems" dataKey="index" rowExpandMode="single" editMode="row" responsiveLayout="scroll">
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             Items
@@ -13,70 +13,69 @@
             <th>Count</th>
             <th style="width: 6rem">
                 <div style="display:flex; justify-content:center;">
-                    <p-toggleButton [(ngModel)]="newIsShowing" offIcon='pi pi-plus'  onIcon='pi pi-times' (onChange)="handleNewChange()"></p-toggleButton>
+                    <p-toggleButton [disabled]="section.capacity <= iItems.length && iItems[0].index != 0" [(ngModel)]="newIsShowing" offIcon='pi pi-plus'  onIcon='pi pi-times' (onChange)="handleNewChange()"></p-toggleButton>
                 </div>
             </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-item let-editing="editing" let-ri="rowIndex">
-        <tr [pEditableRow]="item" *ngIf="ri != 0 || newIsShowing">
+    <ng-template pTemplate="body" let-iItem let-iItems let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="iItem" *ngIf="ri != 0 || newIsShowing || full">
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <!-- <input pInputText type="number" [(ngModel)]="item.id" [min]="1" [max]="section.capacity ? section.capacity : 1"> -->
-                        <p-dropdown [options]="indexChoices" [filter]="true" filterBy="label" appendTo="body" [(ngModel)]="item.id" [style]="{'width':'100%'}"></p-dropdown>
+                        <p-dropdown [options]="indexChoices" [filter]="true" filterBy="label" appendTo="body" [(ngModel)]="iItem.item.id" [style]="{'width':'100%'}"></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{item.id}}
+                        {{iItem.item.id}}
                     </ng-template>
                 </p-cellEditor>
             </td>
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputText type="text" [(ngModel)]="item.name">
+                        <input pInputText type="text" [(ngModel)]="iItem.item.name">
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{item.name}}
+                        {{iItem.item.name}}
                     </ng-template>
                 </p-cellEditor>
             </td>
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputText type="text" [(ngModel)]="item.alt">
+                        <input pInputText type="text" [(ngModel)]="iItem.item.alt">
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{item.alt}}
+                        {{iItem.item.alt}}
                     </ng-template>
                 </p-cellEditor>
             </td>
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputText type="text" [(ngModel)]="item.description">
+                        <input pInputText type="text" [(ngModel)]="iItem.item.description">
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{item.description}}
+                        {{iItem.item.description}}
                     </ng-template>
                 </p-cellEditor>
             </td>
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputText type="number" [(ngModel)]="item.count">
+                        <input pInputText type="number" [(ngModel)]="iItem.item.count">
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{item.count}}
+                        {{iItem.item.count}}
                     </ng-template>
                 </p-cellEditor>
             </td>
             <td>
                 <div style="display:flex; justify-content:center;">
-                    <button *ngIf="!editing" pButton type="button" pInitEditableRow class="p-button-success p-button-text" icon="pi pi-pencil" (click)="onRowEditInit(item)"></button>
-                    <button *ngIf="!editing && ri != 0" pButton type="button" class="p-button-danger p-button-text" icon="pi pi-trash" (click)="onRowDelete(item)"></button>
-                    <button *ngIf="editing" pButton type="button" pSaveEditableRow class="p-button-success p-button-text" icon="pi pi-check" (click)="onRowEditSave(item, ri)"></button>
-                    <button *ngIf="editing && ri != 0" pButton type="button" pCancelEditableRow class="p-button-danger p-button-text" icon="pi pi-times" (click)="onRowEditCancel(item, ri)"></button>
+                    <button *ngIf="!editing" pButton type="button" pInitEditableRow class="p-button-success p-button-text" icon="pi pi-pencil" (click)="onRowEditInit(iItem, ri)"></button>
+                    <button *ngIf="!editing && (ri != 0 || full)" pButton type="button" class="p-button-danger p-button-text" icon="pi pi-trash" (click)="onRowDelete(iItem)"></button>
+                    <button *ngIf="editing" pButton type="button" pSaveEditableRow class="p-button-success p-button-text" icon="pi pi-check" (click)="onRowEditSave(iItem, ri)"></button>
+                    <button *ngIf="editing && (ri != 0 || full)" pButton type="button" pCancelEditableRow class="p-button-danger p-button-text" icon="pi pi-times" (click)="onRowEditCancel(iItem, ri)"></button>
                 </div>
             </td>
         </tr>

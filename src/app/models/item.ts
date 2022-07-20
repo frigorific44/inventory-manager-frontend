@@ -6,3 +6,8 @@ export interface Item {
     count?: number;
     parentId: number;
 }
+
+export interface IndexedItem {
+    item: Item;
+    index: number;
+}

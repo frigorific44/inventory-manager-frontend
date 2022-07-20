@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Company } from '../models/company';
 import { Warehouse } from '../models/warehouse';
 import { WarehouseService } from '../services/warehouse.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-warehouse-list',
@@ -15,6 +16,7 @@ export class WarehouseListComponent implements OnInit {
   warehouses: Array<Warehouse> = [];
   clonedWarehouses: { [s: number]: Warehouse; } = {};
   newIsShowing: boolean = false;
+  @ViewChild(Table) private dataTable!: Table;
 
   constructor(service :WarehouseService) {
     this.service = service;
@@ -34,8 +36,10 @@ export class WarehouseListComponent implements OnInit {
     }
   }
 
-  toggleNew() {
-    this.newIsShowing = !this.newIsShowing;
+  handleNewChange() {
+    if (this.newIsShowing) {
+      this.dataTable.editingRowKeys[-1] = true;
+    }
   }
 
   onRowEditInit(warehouse: Warehouse) {

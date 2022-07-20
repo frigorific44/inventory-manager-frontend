@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Table } from 'primeng/table';
 import { Section } from '../models/section';
 import { Warehouse } from '../models/warehouse';
 import { SectionService } from '../services/section.service';
@@ -15,6 +16,7 @@ export class SectionListComponent implements OnInit {
   sections :Array<Section> = [];
   clonedSections: { [s: number]: Section; } = {};
   newIsShowing: boolean = false;
+  @ViewChild(Table) private dataTable!: Table;
 
   constructor(service :SectionService) {
     this.service = service;
@@ -34,8 +36,10 @@ export class SectionListComponent implements OnInit {
     }
   }
 
-  toggleNew() {
-    this.newIsShowing = !this.newIsShowing;
+  handleNewChange() {
+    if (this.newIsShowing) {
+      this.dataTable.editingRowKeys[-1] = true;
+    }
   }
 
   onRowEditInit(section: Section) {

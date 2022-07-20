@@ -12,7 +12,9 @@
             <th>Description</th>
             <th>Count</th>
             <th style="width: 6rem">
-                <button pButton type="button" class="p-button-warning" [disabled]="section.capacity && section.capacity < items.length" [icon]="newIsShowing ? 'pi pi-times' : 'pi pi-plus'" (click)="toggleNew()"></button>
+                <div style="display:flex; justify-content:center;">
+                    <p-toggleButton [(ngModel)]="newIsShowing" offIcon='pi pi-plus'  onIcon='pi pi-times' (onChange)="handleNewChange()"></p-toggleButton>
+                </div>
             </th>
         </tr>
     </ng-template>
@@ -22,7 +24,7 @@
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <!-- <input pInputText type="number" [(ngModel)]="item.id" [min]="1" [max]="section.capacity ? section.capacity : 1"> -->
-                        <p-dropdown [options]="indexChoices" appendTo="body" [(ngModel)]="item.id" [style]="{'width':'100%'}"></p-dropdown>
+                        <p-dropdown [options]="indexChoices" [filter]="true" filterBy="label" appendTo="body" [(ngModel)]="item.id" [style]="{'width':'100%'}"></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
                         {{item.id}}
@@ -70,10 +72,12 @@
                 </p-cellEditor>
             </td>
             <td>
-                <button *ngIf="!editing" pButton type="button" pInitEditableRow class="p-button-success p-button-text" icon="pi pi-pencil" (click)="onRowEditInit(item)"></button>
-                <button *ngIf="!editing && ri != 0" pButton type="button" class="p-button-danger p-button-text" icon="pi pi-trash" (click)="onRowDelete(item)"></button>
-                <button *ngIf="editing" pButton type="button" pSaveEditableRow class="p-button-success p-button-text" icon="pi pi-check" (click)="onRowEditSave(item, ri)"></button>
-                <button *ngIf="editing" pButton type="button" pCancelEditableRow class="p-button-danger p-button-text" icon="pi pi-times" (click)="onRowEditCancel(item, ri)"></button>
+                <div style="display:flex; justify-content:center;">
+                    <button *ngIf="!editing" pButton type="button" pInitEditableRow class="p-button-success p-button-text" icon="pi pi-pencil" (click)="onRowEditInit(item)"></button>
+                    <button *ngIf="!editing && ri != 0" pButton type="button" class="p-button-danger p-button-text" icon="pi pi-trash" (click)="onRowDelete(item)"></button>
+                    <button *ngIf="editing" pButton type="button" pSaveEditableRow class="p-button-success p-button-text" icon="pi pi-check" (click)="onRowEditSave(item, ri)"></button>
+                    <button *ngIf="editing && ri != 0" pButton type="button" pCancelEditableRow class="p-button-danger p-button-text" icon="pi pi-times" (click)="onRowEditCancel(item, ri)"></button>
+                </div>
             </td>
         </tr>
     </ng-template>

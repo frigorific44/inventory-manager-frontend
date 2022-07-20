@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Table } from 'primeng/table';
 import { Item } from '../models/item';
 import { Section } from '../models/section';
 import { ItemService } from '../services/item.service';
@@ -17,6 +17,7 @@ export class ItemListComponent implements OnInit {
   clonedItems: { [s: number]: Item; } = {};
   newIsShowing: boolean = false;
   indexChoices: Array<{label: string, value: number}> = [];
+  @ViewChild(Table) private dataTable!: Table;
 
   constructor(service :ItemService) {
     this.service = service;
@@ -45,8 +46,10 @@ export class ItemListComponent implements OnInit {
     }
   }
 
-  toggleNew() {
-    this.newIsShowing = !this.newIsShowing;
+  handleNewChange() {
+    if (this.newIsShowing) {
+      this.dataTable.editingRowKeys[this.items[0].id] = true;
+    }
   }
 
   onRowEditInit(item: Item) {

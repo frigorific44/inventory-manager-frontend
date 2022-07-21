@@ -18,7 +18,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-section let-expanded="expanded" let-editing="editing" let-ri="rowIndex">
-        <tr [pEditableRow]="section" *ngIf="((ri != 0 || newIsShowing) && expandedRow < 0) || expandedRow == ri">
+        <tr [pEditableRow]="section" [ngStyle]="{'background-color':expanded ? '#f8f9fa' : 'white' }" *ngIf="((ri != 0 || newIsShowing) && expandedRow < 0) || expandedRow == ri">
             <td>
                 <button *ngIf="ri != 0" type="button" pRipple pButton [pRowToggler]="section" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
             </td>
@@ -64,7 +64,7 @@
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-section>
         <tr>
-            <td colspan="5" [style]="{'padding-top':'0px', 'padding-bottom':'0px'}">
+            <td colspan="5" [style]="{'padding':'0px'}">
                 <app-item-list [section]="section"></app-item-list>
             </td>
         </tr>

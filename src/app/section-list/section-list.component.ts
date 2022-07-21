@@ -17,6 +17,7 @@ export class SectionListComponent implements OnInit {
   clonedSections: { [s: number]: Section; } = {};
   newIsShowing: boolean = false;
   @ViewChild(Table) private dataTable!: Table;
+  expandedRow: number = -1;
 
   constructor(service :SectionService) {
     this.service = service;
@@ -40,6 +41,14 @@ export class SectionListComponent implements OnInit {
     if (this.newIsShowing) {
       this.dataTable.editingRowKeys[-1] = true;
     }
+  }
+
+  handleRowExpand(e: { data: {id: number}; }) {
+    this.expandedRow = this.sections.findIndex((element) => element.id === e.data.id);
+  }
+
+  handleRowCollapse(e: Event) {
+    this.expandedRow = -1
   }
 
   onRowEditInit(section: Section) {

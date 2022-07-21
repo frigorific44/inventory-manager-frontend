@@ -17,6 +17,7 @@ export class WarehouseListComponent implements OnInit {
   clonedWarehouses: { [s: number]: Warehouse; } = {};
   newIsShowing: boolean = false;
   @ViewChild(Table) private dataTable!: Table;
+  expandedRow: number = -1;
 
   constructor(service :WarehouseService) {
     this.service = service;
@@ -40,6 +41,14 @@ export class WarehouseListComponent implements OnInit {
     if (this.newIsShowing) {
       this.dataTable.editingRowKeys[-1] = true;
     }
+  }
+
+  handleRowExpand(e: { data: {id: number}; }) {
+    this.expandedRow = this.warehouses.findIndex((element) => element.id === e.data.id);
+  }
+
+  handleRowCollapse(e: Event) {
+    this.expandedRow = -1
   }
 
   onRowEditInit(warehouse: Warehouse) {

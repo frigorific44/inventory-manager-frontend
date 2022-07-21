@@ -1,4 +1,4 @@
-<p-table [value]="warehouses" dataKey="id" rowExpandMode="single" styleClass="p-datatable-sm" editMode="row" responsiveLayout="scroll">
+<p-table [value]="warehouses" dataKey="id" rowExpandMode="single" styleClass="p-datatable-sm" editMode="row" responsiveLayout="scroll" (onRowExpand)="handleRowExpand($event)" (onRowCollapse)="handleRowCollapse($event)">
     <ng-template pTemplate="caption">
         <div style="display:flex; justify-content:center;">
             Warehouses
@@ -11,13 +11,13 @@
             <th>Description</th>
             <th style="width:6rem;">
                 <div style="display:flex; justify-content:center;">
-                    <p-toggleButton [(ngModel)]="newIsShowing" offIcon='pi pi-plus'  onIcon='pi pi-times' (onChange)="handleNewChange()"></p-toggleButton>
+                    <p-toggleButton [disabled]="expandedRow >= 0" [(ngModel)]="newIsShowing" offIcon='pi pi-plus'  onIcon='pi pi-times' (onChange)="handleNewChange()"></p-toggleButton>
                 </div>
             </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-warehouse let-expanded="expanded" let-editing="editing" let-ri="rowIndex">
-        <tr [pEditableRow]="warehouse" *ngIf="ri != 0 || newIsShowing">
+        <tr [pEditableRow]="warehouse" *ngIf="((ri != 0 || newIsShowing) && expandedRow < 0) || expandedRow == ri">
             <td>
                 <button *ngIf="ri != 0" type="button" pRipple pButton [pRowToggler]="warehouse" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
             </td>

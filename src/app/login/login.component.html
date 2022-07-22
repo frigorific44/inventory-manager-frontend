@@ -1,0 +1,12 @@
+<p-card header="Login">
+    <h5>Username</h5>
+    <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"style="display:inline-flex"><i class="pi pi-user"></i></span>
+        <input type="text" pInputText placeholder="Username">         
+    </div>
+    <h5>Password</h5>
+    <p-password [toggleMask]="true" placeholder="Password"></p-password>
+    <ng-template pTemplate="footer">
+        <p-button label="Login" icon="pi pi-user"></p-button>
+    </ng-template>
+</p-card>
